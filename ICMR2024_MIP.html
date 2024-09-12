@@ -1,0 +1,343 @@
+<html>
+
+<head>
+    <link rel="StyleSheet" href="style.css" type="text/css" media="all">
+    <title>MIP</title>
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+</head>
+<body>
+    <br>
+    <div class="center-div" align="center">
+        <span style="font-size:28px">Enhancing Visible-Infrared Person Re-identification with Modality- and Instance-aware Visual Prompt Learning</span>
+    </div>
+
+    <br>
+    <table align="center" width="1000px">
+        <tbody>
+            <tr>
+                <td align="center" width="150px">
+                    <div class="center-div">
+                        <span style="font-size:18px"><a href="https://scholar.google.com/citations?user=cRmHbWkAAAAJ&hl=en" target="_blank">Ruiqi Wu</a></span>
+                    </div>
+                </td>
+                
+                <td align="center" width="150px">
+                    <div class="center-div">
+                        <span style="font-size:18px"><a href="https://scholar.google.com/citations?user=a-RAVckAAAAJ&hl=en" target="_blank">Bingliang Jiao</a></span>
+                    </div>
+                </td>
+                
+                <td align="center" width="150px">
+                    <div class="center-div">
+                        <span style="font-size:18px"><a href="https://wxwangiris.github.io/" target="_blank">Wenxuan Wang</a></span>
+                    </div>
+                </td>
+
+                <td align="center" width="150px">
+                    <div class="center-div">
+                        <span style="font-size:18px"><a href="https://scholar.google.com/" target="_blank">Meng Liu</a></span>
+                    </div>
+                </td>
+
+                <td align="center" width="150px">
+                    <div class="center-div">
+                        <span style="font-size:18px"><a href="https://scholar.google.com/citations?user=aPLp7pAAAAAJ&hl=en" target="_blank">Peng Wang</a></span>
+                    </div>
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <table align="center" width="700px">
+        <tbody>
+            <tr>
+                <td align="center" width="100px">
+                    <div class="center-div">
+                        <span style="font-size:18px">Northwestern Polytechnical University </span>
+                    </div>
+                    <div class="center-div">
+                        <span style="font-size:18px">National Engineering Laboratory for Integrated Aero-Space-Ground-Ocean Big Data Application Technology</span>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+
+    <hr>
+    <div class="center-div" align="center">
+        <h2>Abstract</h2>
+    </div>
+    <table align="center" width="1000px">
+        <td>
+            <div>
+            <span style="font-size:18px"> 
+            The Visible-Infrared Person Re-identification (VI ReID) aims to 
+            match visible and infrared images of the same pedestrians across
+            non-overlapped camera views. These two input modalities contain
+            both invariant information, such as shape, and modality-specific
+            details, such as color. An ideal model should utilize valuable information 
+            from bothmodalities during training for enhanced representational capability. 
+            However, the gap caused by modality-specific information poses substantial 
+            challenges for the VI ReID model to handle distinct modality inputs simultaneously. 
+            To address this, we introduce the Modality-aware and Instance-aware Visual Prompts
+            (MIP) network in our work, designed to effectively utilize both invariant 
+            and specific information for identification. Specifically, our
+            MIP model is built on the transformer architecture. In this model,
+            we have designed a series of modality-specific prompts, which
+            could enable our model to adapt to and make use of the specific
+            information inherent in different modality inputs, thereby reducing
+            the interference caused by the modality gap and achieving better
+            identification. Besides, we also employ each pedestrian feature to
+            construct a group of instance-specific prompts. These customized
+            prompts are responsible for guiding our model to adapt to each
+            pedestrian instance dynamically, thereby capturing identity-level discriminative 
+            clues for identification. Through extensive experiments on SYSU-MM01 and RegDB datasets, 
+            the effectiveness of  both our designed modules is evaluated. Additionally, our proposed
+            MIP performs better than most state-of-the-art methods.
+            </div>
+        </td>
+       
+    </table>
+    <br><br>
+
+    <hr>
+    <div class="center-div" align="center">
+        <h2>Modality- and Instance-aware Visual Prompts (MIP) Network</h2>
+    </div>
+
+    <table align="center" width="1000px">
+        <td>
+            <div>
+            <span style="font-size:18px">We introduce a MIP network designed for the VI ReID task. 
+                Our primary focus is on adapting the model to different modality inputs and instance inputs, 
+                thereby mining the correspondences between different modalities/instances to facilitate VI ReID. 
+                We achieve these goals by employing two distinct sets of visual prompts.
+                Specifically, we produce modality-specific prompts and instance-specific prompts according to current modality and instance input, 
+                and these two sets of prompts are concatenated after the feature embedding. 
+                By making use of modality-specific and instance-specific information preserved in these prompts, 
+                the model can explore potential correspondences between different modalities and instances, thereby facilitating the VI ReID.
+            </div>
+        </td>
+    </table>
+
+    <br>
+    <table align="center">
+        <tbody>
+            <tr>
+                <td>
+                    <div class="center-div" align="center">
+                        <a href="#"><img src="./FIG_FRAMEWORK.png" width="1000px"></a><br>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="center-div" align="center">
+                        <span style="font-size:16px"><i>MIP Overall Framework</i>
+                        </span></div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+	<br>
+
+    <table align="center" width="1000px">
+        <td>
+            <div>
+            <span style="font-size:18px"> The overall framework of our proposed MIP network, which consists of a backbone model and two major modules. 
+                (a) A pre-trained vision transformer is used as the backbone model. 
+                (b) Modality-aware Prompts Learning (MPL) module produces modality-specific prompts 
+                for input visual embeddings of each layer according to the modality labels of input images. 
+                (c) Instance-aware Prompts Generator (IPG) module generates instance-specific prompts, 
+                and the generated prompts are supervised by "IAEL loss". 
+                The "IAEL Loss" is our proposed Instance-aware Enhancement Loss. 
+                The two kinds of rompts help the backbone network to adapt to different modality and instance inputs.
+            </div>
+        </td>
+    </table>
+    <br><br>
+
+	
+	<!-- <hr> 
+	<div class="center-div" align="center">
+        <h2>Extended Makeup Face Dataset (EMFD)</h2>
+    </div>
+
+    <table align="center" width="1000px">
+        <td>
+            <div>
+            <span style="font-size:18px"> To facilitate this study, we assembled a new makeup face verfication database of 1102 face images 
+			that is 551 pairs of individuals. Each pair has one makeup and one non-makeup face images of the same individual. 
+			All face images are collected from the Internet with text information about makeup or non-makeup. So the 
+			labels of makeup and non-makeup, and the facial identities are collected together with the face images from 
+			the Internet. This dataset have the facial images of large areas of acne, glasses occlusion, head posture changes and
+			so on. Some face examples from our database are shown in below.
+            </div>
+        </td>
+    </table>
+
+    <br>
+    <table align="center">
+        <tbody>
+            <tr>
+                <td>
+                    <div class="center-div" align="center">
+                        <a href="#"><img src="images/cvpr2020_makeup/cvpr2020_expand_dataset.png" width="600px"></a><br>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="center-div" align="center">
+                        <span style="font-size:16px"><i>Extended Makeup Face Dataset</i>
+                        </span></div>
+                </td>
+            </tr>
+        </tbody>
+    </table> 
+	
+	<br>
+	<table align="center" width="1000px">
+        <td>
+            <div>
+            <span style="font-size:18px"> The file name in the folder is xxx_m or xxx_n, where xxx indicates the xxxth person, 
+			"m" indicates the image with makeup, and "n" indicates the image without makeup. 
+			This dataset is for non-commercial reseach purposes (such as academic research) only.
+			<a href="https://drive.google.com/open?id=1wpqZCYh7gGKz897C-hQbgR7CHbJdBGxg">[Dataset Google Drive]</a>
+            <a href="https://pan.baidu.com/s/1jhBqJeXShYyChfp1K3RcCw">[Dataset Baidu Drive](password:n2zw)</a>			
+            </div>
+        </td>
+    </table>
+	<br><br> -->
+
+    <hr>
+    <div class="center-div" align="center">
+        <h2 id="paper">Paper and Code</h2>
+    </div>
+    <table align="center">
+
+        <tbody>
+            <tr>
+                <td>
+                    <img class="layered-paper-big" style="height:200px" src="./paper.png">
+                </td>
+                <td> &nbsp &nbsp </td>
+                <td>
+					<b><span style="display:inline-block;width:600px;font-size:14pt">  Enhancing Visible-Infrared Person Re-identification with Modality- and Instance-aware Visual Prompt Learning
+                    </span></b>
+                    <br><br>
+                    <span style="font-size:14pt"> Ruiqi Wu<sup>*</sup>, Bingliang Jiao<sup>*</sup>, Wenxuan Wang<sup>†</sup>, Meng Liu, Peng Wang</span>
+                    <br><br>
+                    <span style="font-size:10pt"> <sup>*</sup>Equal contribution; <sup>†</sup>Corresponding author.</span>
+                    <br><br>
+                    <span style="font-size:14px">
+                        <a href="https://dl.acm.org/doi/10.1145/3652583.3658109">[Paper]</a>
+                        <a href="./BibTex.bib">[Bibtex]</a>
+                        <a href="https://arxiv.org/abs/2406.12316">[<a href=""></a>rXiv]</a>
+                        <a href="https://github.com/BlackPIQUE-Wu/MIP">[GitHub]</a>
+                        <!-- <a href="https://drive.google.com/open?id=1wpqZCYh7gGKz897C-hQbgR7CHbJdBGxg">[Dataset Google Drive]</a>
+                        <a href="https://pan.baidu.com/s/1jhBqJeXShYyChfp1K3RcCw">[Dataset Baidu Drive](password:n2zw)</a> -->
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br><br>
+	
+	
+	<hr> 
+	<div class="center-div" align="center">
+        <h2>Results</h2>
+    </div>
+
+    <br>
+    <table align="center">
+        <tbody>
+            <tr>
+                <td>
+                    <div class="center-div" align="center">
+                        <a href="#"><img src="./FIG_RESULT.png" width="800px"></a><br>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="center-div" align="center">
+                        <span style="font-size:16px"><i>Comparison Results</i>
+                        </span></div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+	<br><br>
+    <table align="center" width="1000px">
+        <td>
+            <div>
+            <span style="font-size:18px"> The experiment results of our MIP and other state-of-the-art methods under various test modes of SYSU-MM01 and RegDB datasets. 
+                Summarily, our proposed MIP outperforms other state-of-the-art methods on both two mainstream datasets. 
+            </div>
+        </td>
+    </table>
+    <br><br>
+
+	<br>
+    <table align="center">
+        <tbody>
+            <tr>
+                <td>
+                    <div class="center-div" align="center">
+                        <a href="#"><img src="./FIG_VIS.png" width="700px"></a><br>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="center-div" align="center">
+                        <span style="font-size:16px"><i>Visualization Results</i>
+                        </span></div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+	<br><br>
+    <table align="center" width="1000px">
+        <td>
+            <div>
+            <span style="font-size:18px"> The visualizations results of attention maps of our MPL module and baseline model. 
+                From the second column in each case, we could find that the baseline model tends only to capture the explicit correspondence between different modality inputs. 
+                Such as only focusing on the upper dress part while ignoring the skirt part in case (a). 
+                As for our MPL module, with the carefully designed modality-specific prompts, it could effectively adapt to and make use of the modality-specific information. 
+                This enables our MPL model to explore and capture the implicit correspondence between the skirts part. Case (b) shows a similar result.
+            </div>
+        </td>
+    </table>
+    <br><br>
+    
+    <hr>
+    <table align="center" width="980px">
+        <tbody>
+            <tr>
+                <td>
+                    <left>
+                        <div class="center-div" align="center">
+                            <h2>Acknowledgements</h2>
+                        </div>
+                        <div class="center-div" align="center"> 
+                            The website is modified from this <a href="https://www.cs.cmu.edu/~wyuan1/pcn/">template</a>.
+                        </div>
+                    </left>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+
+
+
+</body>
+
+</html>

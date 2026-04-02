@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FUSION | Multi-View Pedestrian Association and Tracking on Mobile Aerial-Ground Platforms</title>
+  <style>
+    :root {
+      --bg: #f7f8fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --subtext: #4b5563;
+      --accent: #2563eb;
+      --accent-dark: #1d4ed8;
+      --border: #e5e7eb;
+      --light: #f3f4f6;
+      --maxw: 1100px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.65;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: var(--accent-dark);
+      text-decoration: underline;
+    }
+
+    .container {
+      width: min(var(--maxw), 92%);
+      margin: 0 auto;
+    }
+
+    header {
+      background: linear-gradient(180deg, #eef4ff 0%, #f7f8fb 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 48px 0 36px;
+    }
+
+    .title {
+      font-size: 2.3rem;
+      line-height: 1.2;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .subtitle {
+      font-size: 1.08rem;
+      color: var(--subtext);
+      max-width: 920px;
+      margin: 0 auto 22px;
+    }
+
+    .authors {
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+
+    .affiliations {
+      color: var(--subtext);
+      font-size: 0.96rem;
+      margin-bottom: 24px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 18px;
+      border-radius: 10px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 600;
+      border: 1px solid var(--accent);
+      transition: 0.2s ease;
+    }
+
+    .btn:hover {
+      background: var(--accent-dark);
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .btn.secondary {
+      background: #fff;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+    }
+
+    .btn.secondary:hover {
+      background: #eef4ff;
+    }
+
+    section {
+      padding: 44px 0;
+    }
+
+    .section-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+    }
+
+    h2 {
+      margin-top: 0;
+      margin-bottom: 18px;
+      font-size: 1.7rem;
+    }
+
+    h3 {
+      margin-top: 0;
+      margin-bottom: 12px;
+      font-size: 1.15rem;
+    }
+
+    p {
+      margin: 0 0 14px;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 24px;
+    }
+
+    .three-col {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .four-col {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .placeholder {
+      width: 100%;
+      min-height: 260px;
+      border: 2px dashed #cbd5e1;
+      border-radius: 14px;
+      background: #fafafa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #6b7280;
+      padding: 20px;
+      font-size: 0.98rem;
+    }
+
+    .placeholder.small {
+      min-height: 180px;
+    }
+
+    .placeholder.tall {
+      min-height: 340px;
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .tag {
+      background: #eef4ff;
+      color: #1e40af;
+      border: 1px solid #c7d2fe;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+
+    .metric-boxes {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .metric-box {
+      background: var(--light);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .metric-box .num {
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--accent-dark);
+      margin-bottom: 6px;
+    }
+
+    .metric-box .label {
+      color: var(--subtext);
+      font-size: 0.95rem;
+    }
+
+    ul.clean {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    ul.clean li {
+      margin-bottom: 10px;
+    }
+
+    .resource-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .resource-item {
+      border: 1px solid var(--border);
+      background: var(--light);
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .bibtex {
+      background: #111827;
+      color: #e5e7eb;
+      border-radius: 12px;
+      padding: 18px;
+      overflow-x: auto;
+      font-size: 0.95rem;
+      line-height: 1.55;
+      white-space: pre-wrap;
+    }
+
+    footer {
+      padding: 30px 0 50px;
+      color: var(--subtext);
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    @media (max-width: 900px) {
+      .two-col,
+      .three-col,
+      .four-col,
+      .resource-list,
+      .metric-boxes {
+        grid-template-columns: 1fr;
+      }
+
+      .title {
+        font-size: 1.8rem;
+      }
+
+      .section-card {
+        padding: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container center">
+      <div class="title">
+        Novel Framework and Benchmarks for Multi-View Pedestrian Association and Tracking on Mobile Aerial-Ground Platforms
+      </div>
+
+      <div class="authors">
+        Ruiqi Wu, Bingliang Jiao, Ruize Han, Hangzheng Yu, Xunkai Jiang, Shining Wang, Yuanqi Hu, Wenxuan Wang, Peng Wang
+      </div>
+
+      <div class="affiliations">
+        <!-- Northwestern Polytechnical University and collaborators -->
+        <!-- <br /> -->
+          Manuscript Submitted to IEEE Transactions on Information Forensics and Security, 2026
+        </div>
+
+      <p class="subtitle">
+        We present FUSION, a viewpoint-robust framework for multi-view pedestrian association and tracking under mobile aerial-ground settings,
+        together with RealMvMoAT, a large-scale benchmark featuring substantial viewpoint shifts, diverse scene layouts, and complex platform motion.
+      </p>
+
+      <div class="hero-buttons">
+        <a class="btn secondary" href="#" target="_blank"  style="pointer-events: none; background-color: #e0e0e0; color: #b0b0b0;">Paper</a>
+        <a class="btn secondary" href="#" target="_blank"   style="pointer-events: none; background-color: #e0e0e0; color: #b0b0b0;">Code</a>
+        <a class="btn secondary" href="#" target="_blank">Dataset</a>
+        <a class="btn secondary" href="#citation">BibTeX</a>
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <div class="container">
+      <div class="section-card">
+        <h2>Overview</h2>
+        <div class="two-col">
+          <div>
+            <p>
+              Multi-view Multi-object Association and Tracking (MvMoAT) aims to associate the same pedestrian across camera views
+              while maintaining temporally consistent trajectories. This problem becomes particularly challenging in mobile aerial-ground systems,
+              where dynamic platforms and large viewpoint shifts often cause severe appearance distortion.
+            </p>
+            <p>
+              To address this issue, we propose <strong>FUSION</strong> framework, with <strong>MAC</strong>, a multi-cue adaptive combination module that combines appearance information with local context,
+              3D body structure, and neighbor relations for robust cross-view identity association. We further introduce <strong>RMFS</strong>,
+              a real-time multi-view feature synchronization module that aggregates historical and cross-view features to improve temporal tracking stability.
+              In addition, we build <strong>RealMvMoAT</strong>, a large-scale real-world benchmark collected from mobile aerial and ground platforms.
+              It provides a challenging testbed for cross-view association and tracking under realistic viewpoint variation.
+            </p>
+          </div>
+
+          <div class="placeholder tall" style="display: flex; flex-direction: column; align-items: center;">
+            <p><strong>MvMoAT task in Mobile Aerial-Ground Settings</strong></p>
+            <img src="images/overview.gif" alt="Overview Figure" style="width:100%; border-radius:10px;">
+          </div>
+        </div>
+        <div class="tag-list">
+          <span class="tag">Multi-view Association and Tracking</span>
+          <span class="tag">Mobile Aerial-Ground Platforms</span>
+          <span class="tag">Benchmark Dataset</span>
+           <span class="tag">Viewpoint Robustness</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-card">
+        <h2>Method: FUSION</h2>
+        <p>
+          FUSION consists of a backbone and two main modules:
+          <strong>MAC</strong> for multi-cue adaptive fusion in cross-view association,
+          and <strong>RMFS</strong> for cross-view and temporal feature synchronization in tracking.
+        </p>
+
+        <div style="margin: 24px 0; text-align: center;">
+          <div class="placeholder tall" style="display: flex; flex-direction: column; align-items: center;">
+            <p><strong>Our Proposed FUSION Framework</strong></p>
+            <img src="images/framework.png" alt="Framework" style="width:85%; border-radius:14px;">
+          </div>
+        </div>
+
+        <div class="three-col">
+          <div class="resource-item">
+            <h3>MAC: Multi-cue Adaptive Combination</h3>
+            <p>
+              MAC extracts and integrates multiple complementary cues at the similarity level.
+              It is designed to address the instability caused by challenges like large viewpoint changes.
+            </p>
+          </div>
+
+          <div class="resource-item">
+            <h3>RMFS: Real-time Multi-view Feature Synchronization</h3>
+            <p>
+              RMFS maintains identity-level historical representations and dynamically refines trajectory features,
+              enabling more stable temporal matching between new detections and existing trajectories.
+            </p>
+          </div>
+
+          <div class="resource-item">
+            <h3>Why it works</h3>
+            <p>
+              Instead of relying only on appearance, FUSION leverages scene context, body geometry, and spatial relations
+              to improve identity reasoning across views and over time.
+            </p>
+          </div>
+        </div>
+
+        <div style="margin-top: 24px;">
+          <h3>Multi-cue Design</h3>
+          <div class="four-col">
+            <div class="resource-item">
+              <h3>Appearance</h3>
+              <p>
+                Provides the primary visual identity representation and serves as the basic cue for matching.
+              </p>
+            </div>
+
+            <div class="resource-item">
+              <h3>Local Context</h3>
+              <p>
+                Captures semantic information from the surrounding region, helping disambiguate identities when appearance is unreliable.
+              </p>
+            </div>
+
+            <div class="resource-item">
+              <h3>3D Structure</h3>
+              <p>
+                Uses body pose and shape as intrinsic cues that remain relatively stable across viewpoints.
+              </p>
+            </div>
+
+            <div class="resource-item">
+              <h3>Neighbor Relation</h3>
+              <p>
+                Models the local spatial arrangement among nearby pedestrians to provide robust relational evidence.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-card">
+        <h2>RealMvMoAT Benchmark</h2>
+        <p>
+          RealMvMoAT is a large-scale benchmark designed for multi-view pedestrian association and tracking under realistic mobile aerial-ground settings.
+          It contains diverse outdoor scenes, multiple synchronized views, rich viewpoint variation, and irregular camera motion.
+        </p>
+
+        <div class="metric-boxes">
+          <div class="metric-box">
+            <div class="num">52</div>
+            <div class="label">Synchronized video groups</div>
+          </div>
+          <div class="metric-box">
+            <div class="num">314</div>
+            <div class="label">Videos</div>
+          </div>
+          <div class="metric-box">
+            <div class="num">504.9K</div>
+            <div class="label">Frames</div>
+          </div>
+          <div class="metric-box">
+            <div class="num">7.3M+</div>
+            <div class="label">Identity-labeled boxes</div>
+          </div>
+        </div>
+
+        <div class="two-col" style="margin-top: 24px;">
+          <div>
+            <h3>Key Characteristics</h3>
+            <ul class="clean">
+              <li>Captured by up to 7 synchronized cameras, including 5 UAV views and 2 ground views</li>
+              <li>Diverse outdoor environments such as parks, lawns, lakesides, sports fields, and urban plazas</li>
+              <li>Irregular platform motion including circular sweeps, hovering rotations, lateral panning, and zigzag flight</li>
+              <li>Supports both cross-view association and temporal tracking under realistic deployment conditions</li>
+            </ul>
+
+            <!-- <h3 style="margin-top: 20px;">Annotation Pipeline</h3>
+            <ul class="clean">
+              <li>Temporal alignment through clipping and offset correction</li>
+              <li>Hybrid box annotation with manual labeling and detector-assisted initialization</li>
+              <li>Fully manual cross-view identity assignment</li>
+              <li>Multi-stage quality control for consistency, blur, occlusion, and crowded scenes</li>
+            </ul> -->
+          </div>
+
+          <div>
+            <h3 style="margin-top: 20px;">Annotation Pipeline</h3>
+            <ul class="clean">
+              <li>Temporal alignment through clipping and offset correction</li>
+              <li>Hybrid box annotation with manual labeling and detector-assisted initialization</li>
+              <li>Fully manual cross-view identity assignment</li>
+              <li>Multi-stage quality control for consistency, blur, occlusion, and crowded scenes</li>
+            </ul>
+          </div>
+        </div>
+        <div class="placeholder tall" style="display: flex; flex-direction: column; align-items: center;">
+            <p><strong>Examples in RealMvMoAT Benchmark</strong></p>
+          <img src="images/realmvmoat.png" alt="Framework" style="width:85%; border-radius:14px;">
+        <!-- </div> -->
+          <br>
+          <br>
+
+
+        <!-- <div style="margin-top: 24px;"> -->
+        <!-- <div class="placeholder tall" style="display: flex; flex-direction: column; align-items: center;"> -->
+          <p><strong>Comparison of Existing MvMoAT Benchmarks</strong></p>
+          <img src="images/realmvmoat_comparison.png" alt="Framework" style="width:100%; border-radius:14px;">
+        </div>
+        <!-- </div> -->
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-card">
+        <h2>Experimental Results</h2>
+        <p>
+          FUSION achieves state-of-the-art performance on RealMvMoAT and also demonstrates strong generalization on multiple public MvMoAT benchmarks.
+          The gains come from jointly improving cross-view association and temporal identity consistency.
+        </p>
+
+        <div>
+          <div>
+            <h3>Main Findings</h3>
+            <ul class="clean">
+              <li>FUSION substantially outperforms strong baselines on the proposed RealMvMoAT benchmark</li>
+              <li>Adaptive multi-cue fusion improves robustness under appearance ambiguity and viewpoint change</li>
+              <li>RMFS strengthens trajectory consistency by synchronizing features across views and time</li>
+              <li>The method generalizes well to public datasets with different camera layouts and motion settings</li>
+            </ul>
+          </div>
+
+        </div>
+
+        <div style="margin-top: 22px;">
+          <div class="placeholder tall" style="display: flex; flex-direction: column; align-items: center;">
+            <p><strong>Results of our FUSION and Other State-of-the-Art Methods on RealMvMoAT Benchmark.</strong></p>
+            <img src="images/results_realmvmoat.png" alt="Framework" style="width:100%; border-radius:14px;">
+            <br>
+            <p><strong>Results of our FUSION and Other State-of-the-Art Methods on MvMHAT Benchmark.</strong></p>
+            <img src="images/results_mvmhat.png" alt="Framework" style="width:100%; border-radius:14px;">
+          </div>
+        <!-- </div> -->
+
+        <!-- <div style="margin-top: 22px;">
+          <div class="placeholder tall" style="display: flex; flex-direction: column; align-items: center;">
+            <p><strong>Results of our FUSION and Other State-of-the-Art Methods on MvMHAT Benchmark.</strong></p>
+            <img src="images/results_mvmhat.png" alt="Framework" style="width:100%; border-radius:14px;">
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-card">
+        <h2>Qualitative Visualization</h2>
+        <p>
+          Beyond quantitative improvements, FUSION provides more reliable cross-view matching in difficult cases with similar appearance,
+          occlusion, and large viewpoint discrepancy. In case here, when appearance alone becomes ambiguous, auxiliary cues offer complementary evidence.
+        </p>
+
+        <div class="four-col" style="margin-top: 18px; display: flex; justify-content: space-between; gap: 20px;">
+          <div class="placeholder tall" style="display: flex; flex-direction: column; align-items: center; height: auto;">
+            <p><strong>Appearance</strong></p>
+            <img src="images/app_vis.png" alt="Framework" style="width:110%; border-radius:5px;">
+          </div>
+          <div class="placeholder tall" style="display: flex; flex-direction: column; align-items: center; height: auto;">
+            <p><strong>Local Context Cue</strong></p>
+            <img src="images/local_vis.png" alt="Framework" style="width:110%; border-radius:5px;">
+          </div>
+          <div class="placeholder tall" style="display: flex; flex-direction: column; align-items: center; height: auto;">
+            <p><strong>3D Structure Cue</strong></p>
+            <img src="images/3d_vis.png" alt="Framework" style="width:110%; border-radius:5px;">
+          </div>
+          <div class="placeholder tall" style="display: flex; flex-direction: column; align-items: center; height: auto;">
+            <p><strong>Neighbor Relation Cue</strong></p>
+            <img src="images/neighbor_vis.png" alt="Framework" style="width:110%; border-radius:5px;">
+          </div>
+        </div>
+        
+        <div style="margin-top: 18px;">
+          <div class="placeholder tall" style="display: flex; flex-direction: column; align-items: center; height: auto;">
+            <p><strong>Visualization of the Results for Cross-View Association and Tracking</strong></p>
+            <img src="images/results_vis.gif" alt="Framework" style="width:100%; border-radius:5px;">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-card">
+        <h2>Resources</h2>
+        <div class="resource-list">
+          <div class="resource-item">
+            <h3>Paper</h3>
+            <p>Read the full paper for detailed methodology, benchmark construction, and experiments.</p>
+            <!-- <p><a href="#" target="_blank">Project Paper Link</a></p> -->
+            <p><u>Project Paper Link</u> (Coming soon...)</p>
+          </div>
+
+          <div class="resource-item">
+            <h3>Code</h3>
+            <p>Training and evaluation code for FUSION will be provided here.</p>
+            <br>
+            <!-- <p><a href="#" target="_blank">GitHub Repository</a></p> -->
+            <p><u>Code GitHub Repository</u> (Coming soon...)</p>
+          </div>
+
+          <div class="resource-item">
+            <h3>Dataset</h3>
+            <p>Download links and benchmark instructions for RealMvMoAT will be listed here.</p>
+            <p><a href="#" target="_blank">Dataset GitHub Repository</a></p>
+          </div>
+
+          <div class="resource-item">
+            <h3>Supplementary Materials</h3>
+            <p>Additional ablations, visualizations, and implementation details.</p>
+            <br>
+            <!-- <p><a href="#" target="_blank">Supplementary PDF</a></p> -->
+            <p><u>Supplementary PDF</u> (Coming soon...)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="citation">
+    <div class="container">
+      <div class="section-card">
+        <h2>Citation</h2>
+        <p>If you find this project useful in your research, please consider citing:</p>
+        <div class="bibtex">
+@article{wu2026fusion,
+  title={Novel Framework and Benchmarks for Multi-View Pedestrian Association and Tracking on Mobile Aerial-Ground Platforms},
+  author={Wu, Ruiqi and Jiao, Bingliang and Han, Ruize and Yu, Hangzheng and Jiang, Xunkai and Wang, Shining and Hu, Yuanqi and Wang, Wenxuan and Wang, Peng},
+  journal={arXiv preprint arXiv:26XX.XXXX},
+  year={2026}
+}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      This project page template is prepared for FUSION and RealMvMoAT.
+      <br />
+      Please replace placeholder links, figures, venue information, and citation metadata with your final release version.
+    </div>
+  </footer>
+
+</body>
+</html>
